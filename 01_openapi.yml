@@ -1,0 +1,453 @@
+openapi: 3.0.3
+info:
+  title: Course Enrollment 
+  description: >-
+  version: 1.0.0
+tags:
+  - name: course
+    description: Everything about course
+  - name: lecturer
+    description: Everything about lecturer
+  - name: semester
+    description: Everything about semester
+paths:
+  /course:
+    summary: read all the courses 
+    get:
+      tags:
+        - course
+      summary: 課程列表
+      description: read course
+      operationId: readCourse
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+      security:
+        - api_key: []
+    post:
+      tags:
+        - course
+      summary: 建立新課程 
+      description: create course
+      operationId: createCourse
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoursePost'
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 1
+                    description: ID of the created lecturer
+          links: 
+            GetLecturerById:
+              operationId: readCourseById
+              parameters:
+                userId: '$response.body#/id'
+        '400':
+          description: Invalid input
+      security:
+        - api_key: []
+  /course/{courseId}:
+    get:
+      tags:
+        - course
+      summary: read course
+      description: read course by id
+      operationId: readCourseById
+      parameters:
+        - name: courseId
+          in: path
+          description: ID of the course 
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Course not found
+      security:
+        - api_key: []
+    put:
+      tags:
+        - course
+      summary: 更新課程內容 
+      description: update course by id
+      operationId: updateCourse
+      parameters:
+        - name: courseId
+          in: path
+          description: ID of course that need to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: update an existent course 
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CoursePost'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Course'
+        '400':
+          description: Invalid input or invalid id
+        '404':
+          description: Course not found
+      security:
+        - api_key: []
+    delete:
+      tags:
+        - course
+      summary: 刪除課程
+      description: delete course by id
+      operationId: deleteCourse
+      parameters:
+        - name: courseId
+          in: path
+          description: ID of course that need to be updated
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Course not found
+      security:
+        - api_key: []
+  /course/lecturer/{lecturerId}:
+    get:
+      tags:
+        - course
+      summary: 授課講師所開課程列表
+      description: read course by lecturer id 
+      operationId: readCourseByLecturerId
+      parameters:
+        - name: lecturerId
+          in: path
+          description: lecturerId of course to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Course not found
+      security:
+        - api_key: []
+  /lecturer:
+    get:
+      tags:
+        - lecturer
+      summary: 授課講師列表 
+      description: read lecturer
+      operationId: readLecturer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lecturer'
+      security:
+        - api_key: []
+    post:
+      tags:
+        - lecturer
+      summary: 建立新講師
+      description: create lecturer
+      operationId: createLecturer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LecturerPost'
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 1
+                    description: ID of the created lecturer
+          links: 
+            GetLecturerById:
+              operationId: readLecturerById
+              parameters:
+                userId: '$response.body#/id'
+        '400':
+          description: Invalid input
+      security:
+        - api_key: []
+  /lecturer/{lecturerId}:
+      get:
+        tags:
+          - lecturer
+        summary: read lecturer
+        description: read an exist lecturer by id
+        operationId: readLecturerById
+        parameters:
+          - name: lecturerId
+            in: path
+            description: ID of the lecturer 
+            required: true
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '200':
+            description: successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Lecturer'
+          '400':
+            description: Invalid ID supplied
+          '404':
+            description: lecturer not found
+        security:
+          - api_key: []
+  /semester:
+      post:
+        tags:
+          - semester
+        summary: create semester
+        description: create semester
+        operationId: createSemester
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SemesterPost'
+        responses:
+          '201':
+            description: created
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                      example: 1
+                      description: ID of the created semester
+            links: 
+              readSemesterById:
+                operationId: readSemesterById
+                parameters:
+                  userId: '$response.body#/id'
+          '400':
+            description: Invalid input
+        security:
+          - api_key: []
+  /semester/{semesterId}:
+      get:
+        tags:
+          - semester
+        summary: read semester
+        description: read an exist semester by id
+        operationId: readSemesterById
+        parameters:
+          - name: semesterId
+            in: path
+            description: ID of the semester 
+            required: true
+            schema:
+              type: integer
+              format: int64
+        responses:
+          '200':
+            description: successful operation
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Semester'
+          '400':
+            description: Invalid ID supplied
+        security:
+          - api_key: []
+components:
+  schemas:
+    Course:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+            example: 10
+          name:
+            type: string
+            example: Academic Writing
+          abstract:
+            type: string
+            example: In this course, the students will learn how to develop academic arguments, conducting textual or cultural analysis to support these arguments, and develop a clear and elegant writing style. The students are expected to improve their writing skills through interactive activities such as class discussions and peer review.
+          semester:
+            type: string
+            example: 202401
+          classDay:
+            type: string
+            example: Mon
+            enum:
+             - Mon
+             - Tues
+             - Wed
+             - Thurs
+             - Fri
+             - Sat
+             - Sun
+          startTime:
+            type: string
+            example: 1400
+          endTime:
+            type: string
+            example: 1600
+          credit:
+            type: integer
+            format: date-time
+            example: 2
+            minimum: 1
+            maximum: 5
+          lecturer:
+            type: string
+            example: Patrick Star
+    CoursePost:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Academic Writing
+          abstract:
+            type: string
+            example: In this course, the students will learn how to develop academic arguments, conducting textual or cultural analysis to support these arguments, and develop a clear and elegant writing style. The students are expected to improve their writing skills through interactive activities such as class discussions and peer review.
+          semesterId:
+            type: integer
+            example: 1
+          classDay:
+            type: string
+            example: Mon
+            enum:
+             - Mon
+             - Tues
+             - Wed
+             - Thurs
+             - Fri
+             - Sat
+             - Sun
+          startTime:
+            type: string
+            example: 1400
+          endTime:
+            type: string
+            example: 1600
+          credit:
+            type: integer
+            format: date-time
+            example: 2
+            minimum: 1
+            maximum: 5
+          lecturerId:
+            type: integer
+            example: 1
+    Lecturer:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+            example: 1
+          name:
+            type: string
+            example: Patrick Star
+          email:
+            type: string
+            example: patrick_star@ocean.edu.tw
+          phone:
+            type: string
+            example: 0900-123456
+    LecturerPost:
+        type: object
+        properties:
+          name:
+            type: string
+            example: Patrick Star
+          email:
+            type: string
+            example: patrick_star@ocean.edu.tw
+          phone:
+            type: string
+            example: 0900-123456
+    Semester:
+        type: object
+        properties:
+          id:
+            type: integer
+            format: int64
+            example: 1
+          year:
+            type: string
+            example: '2024'
+          semester:
+            type: integer
+            example: 1
+    SemesterPost:
+        type: object
+        properties:
+          year:
+            type: string
+            example: '2024'
+          semester:
+            type: integer
+            example: 1
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
