@@ -26,7 +26,7 @@ class ExampleTest extends TestCase
     }
 
     /**
-     * 測試建立課程 - 重功建立並可查詢
+     * 測試建立課程 - 成功建立並可查詢
      *
      * @return void
      */
@@ -46,6 +46,16 @@ class ExampleTest extends TestCase
         $response = $this->postJson('/course', $data);
         $id = $response->getContent()['id'];
         $responseGet = $this->get('/course/'.$id );
+        $data = [
+            "name" => "Academic Writing",
+            "abstract" => "In this course, the students will learn how to develop academic arguments, conducting textual or cultural analysis to support these arguments, and develop a clear and elegant writing style. The students are expected to improve their writing skills through interactive activities such as class discussions and peer review.",
+            "semester" => "202301",
+            "classDay" => "Mon",
+            "startTime" => "1400",
+            "endTime" => "1600",
+            "credit" => 2,
+            "lecturer" => "John Doe",
+        ];
         $responseGet->assertJson($data, $strict = false);
     }
 
