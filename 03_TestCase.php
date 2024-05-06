@@ -23,7 +23,7 @@ class ExampleTest extends TestCase
         $token = $this->postJson('/gettoken', $logindata )->json()['token'];
         $headers = [
             'Accept'        => 'application/json',
-            'AUTHORIZATION' => 'Bearer ' . $token
+            'Authorization' => 'Bearer ' . $token
         ];
         $response = $this->withHeaders($headers)->get('/course/lecturer/2');
         $data = [
@@ -48,7 +48,7 @@ class ExampleTest extends TestCase
         $token = $this->postJson('/gettoken', $logindata )->json()['token'];
         $headers = [
             'Accept'        => 'application/json',
-            'AUTHORIZATION' => 'Bearer ' . $token
+            'Authorization' => 'Bearer ' . $token
         ];
         $data = [
             "name" => "Academic Writing",
@@ -92,7 +92,7 @@ class ExampleTest extends TestCase
         $token = $this->postJson('/gettoken', $logindata )->json()['token'];
         $headers = [
             'Accept'        => 'application/json',
-            'AUTHORIZATION' => 'Bearer ' . $token
+            'Authorization' => 'Bearer ' . $token
         ];
         $data = [
             "name" => "TEST PUT",

@@ -31,7 +31,7 @@ paths:
         '401':
             description: Unauthorized
       security:
-        - api_key: []
+        - Authorization: []
     post:
       tags:
         - course
@@ -66,7 +66,7 @@ paths:
         '401':
             description: Unauthorized
       security:
-        - api_key: []
+        - Authorization: []
   /course/{courseId}:
     get:
       tags:
@@ -96,7 +96,7 @@ paths:
         '401':
             description: Unauthorized
       security:
-        - api_key: []
+        - Authorization: []
     put:
       tags:
         - course
@@ -131,7 +131,7 @@ paths:
         '401':
             description: Unauthorized
       security:
-        - api_key: []
+        - Authorization: []
     delete:
       tags:
         - course
@@ -156,7 +156,7 @@ paths:
         '401':
             description: Unauthorized
       security:
-        - api_key: []
+        - Authorization: []
   /course/lecturer/{lecturerId}:
     get:
       tags:
@@ -188,7 +188,7 @@ paths:
         '401':
             description: Unauthorized
       security:
-        - api_key: []
+        - Authorization: []
   /lecturer:
     get:
       tags:
@@ -206,7 +206,7 @@ paths:
         '401':
             description: Unauthorized
       security:
-        - api_key: []
+        - Authorization: []
     post:
       tags:
         - lecturer
@@ -241,7 +241,7 @@ paths:
         '401':
             description: Unauthorized
       security:
-        - api_key: []
+        - Authorization: []
   /lecturer/{lecturerId}:
       get:
         tags:
@@ -271,7 +271,7 @@ paths:
           '401':
             description: Unauthorized
         security:
-          - api_key: []
+          - Authorization: []
   /semester:
       post:
         tags:
@@ -307,7 +307,7 @@ paths:
           '401':
             description: Unauthorized
         security:
-          - api_key: []
+          - Authorization: []
   /semester/{semesterId}:
       get:
         tags:
@@ -335,7 +335,7 @@ paths:
           '401':
             description: Unauthorized
         security:
-          - api_key: []
+          - Authorization: []
 components:
   schemas:
     Course:
@@ -469,7 +469,7 @@ components:
             type: integer
             example: 1
   securitySchemes:
-    api_key:
+    Authorization:
       type: apiKey
-      name: api_key
+      name: Authorization
       in: header
