@@ -44,6 +44,7 @@ class ExampleTest extends TestCase
         ];
         
         $response = $this->postJson('/course', $data);
+        $response->assertStatus(201);
         $id = $response->getContent()['id'];
         $responseGet = $this->get('/course/'.$id );
         $data = [
@@ -56,6 +57,7 @@ class ExampleTest extends TestCase
             "credit" => 2,
             "lecturer" => "John Doe",
         ];
+        $responseGet->assertStatus(200);
         $responseGet->assertJson($data, $strict = false);
     }
 
