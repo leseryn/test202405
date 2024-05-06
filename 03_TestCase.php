@@ -15,14 +15,23 @@ class ExampleTest extends TestCase
      */
     public function test_course_lecturer_get()
     {
-        $response = $this->get('/course/lecturer/2');
+
+        $logindata = [
+            'account' => 'lecturer2',
+            'password' => 'password2',
+        ];
+        $token = $this->postJson('/gettoken', $logindata )->json()['token'];
+        $headers = [
+            'Accept'        => 'application/json',
+            'AUTHORIZATION' => 'Bearer ' . $token
+        ];
+        $response = $this->withHeaders($headers)->get('/course/lecturer/2');
         $data = [
             ['id' => 2],
             ['id' => 5],
             ['id' => 8],
         ];
-        $response->assertStatus(200);
-        $response->assertJson($data, $strict = false);
+        $response->assertStatus(200)->assertJson($data, $strict = false);
     }
 
     /**
@@ -32,6 +41,15 @@ class ExampleTest extends TestCase
      */
     public function test_course_post()
     {
+        $logindata = [
+            'account' => 'lecturer1',
+            'password' => 'password1',
+        ];
+        $token = $this->postJson('/gettoken', $logindata )->json()['token'];
+        $headers = [
+            'Accept'        => 'application/json',
+            'AUTHORIZATION' => 'Bearer ' . $token
+        ];
         $data = [
             "name" => "Academic Writing",
             "abstract" => "In this course, the students will learn how to develop academic arguments, conducting textual or cultural analysis to support these arguments, and develop a clear and elegant writing style. The students are expected to improve their writing skills through interactive activities such as class discussions and peer review.",
@@ -43,10 +61,10 @@ class ExampleTest extends TestCase
             "lecturerId" => 1,
         ];
         
-        $response = $this->postJson('/course', $data);
+        $response = $this->withHeaders($headers)->postJson('/course', $data);
         $response->assertStatus(201);
         $id = $response->getContent()['id'];
-        $responseGet = $this->get('/course/'.$id );
+        $responseGet = $this->withHeaders($headers)->get('/course/'.$id );
         $data = [
             "name" => "Academic Writing",
             "abstract" => "In this course, the students will learn how to develop academic arguments, conducting textual or cultural analysis to support these arguments, and develop a clear and elegant writing style. The students are expected to improve their writing skills through interactive activities such as class discussions and peer review.",
@@ -57,8 +75,7 @@ class ExampleTest extends TestCase
             "credit" => 2,
             "lecturer" => "John Doe",
         ];
-        $responseGet->assertStatus(200);
-        $responseGet->assertJson($data, $strict = false);
+        $responseGet->assertStatus(200)->assertJson($data, $strict = false);
     }
 
     /**
@@ -68,11 +85,20 @@ class ExampleTest extends TestCase
      */
     public function test_course_put()
     {
+        $logindata = [
+            'account' => 'lecturer1',
+            'password' => 'password1',
+        ];
+        $token = $this->postJson('/gettoken', $logindata )->json()['token'];
+        $headers = [
+            'Accept'        => 'application/json',
+            'AUTHORIZATION' => 'Bearer ' . $token
+        ];
         $data = [
             "name" => "TEST PUT",
             "abstract" => "TEST PUT",
         ];
-        $response = $this->putJson('/course/3333', $data);
+        $response = $this->withHeaders($headers)->putJson('/course/3333', $data);
         $response->assertStatus(404);
     }
 
